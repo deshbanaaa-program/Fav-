@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koleksi Favorit · Luxe</title>
+    <!-- Font Awesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.4s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        :root {
+            --bg: #faf3e8;
+            --text: #2e241f;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(210, 180, 140, 0.3);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.06);
+            --accent: #c7a05b;
+            --accent-light: #e4d5b6;
+            --header-bg: rgba(255, 255, 255, 0.5);
+            --footer-text: #8b7a6b;
+        }
+
+        body.dark {
+            --bg: #1a1c1e;
+            --text: #edeae5;
+            --card-bg: rgba(30, 30, 35, 0.8);
+            --card-border: rgba(200, 170, 120, 0.2);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            --accent: #d4af37;
+            --accent-light: #3a3128;
+            --header-bg: rgba(20, 20, 22, 0.7);
+            --footer-text: #a99e8f;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            border-radius: 3rem;
+            padding: 2rem 2rem 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: var(--header-bg);
+            padding: 0.8rem 1.5rem;
+            border-radius: 4rem;
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--card-border);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--accent);
+        }
+        .logo i {
+            margin-right: 8px;
+            color: var(--accent);
+        }
+
+        #theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            cursor: pointer;
+            color: var(--accent);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            transition: all 0.3s;
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1) rotate(10deg);
+            background: var(--accent-light);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+            color: var(--accent);
+        }
+
+        .cards {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 3rem 0;
+        }
+
+        .card {
+            flex: 1 1 200px;
+            max-width: 260px;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            border-radius: 2.5rem;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent);
+            box-shadow: 0 30px 50px rgba(0,0,0,0.15);
+        }
+        .card i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        .card h3 {
+            font-weight: 500;
+            font-size: 1.4rem;
+            color: var(--text);
+        }
+
+        /* kategori view */
+        #category-view {
+            margin-top: 1rem;
+        }
+        #back-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text);
+            padding: 0.8rem 1.8rem;
+            border-radius: 3rem;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(5px);
+            transition: 0.2s;
+        }
+        #back-btn:hover {
+            background: var(--accent-light);
+            border-color: var(--accent);
+        }
+        #category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+            border-left: 5px solid var(--accent);
+            padding-left: 1rem;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--card-border);
+            border-radius: 1.8rem;
+            padding: 1.2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: 0.2s;
+        }
+        .item-card img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin-bottom: 0.8rem;
+        }
+        .item-card p {
+            font-weight: 500;
+            word-break: break-word;
+        }
+        .item-card i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: var(--footer-text);
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 1.5rem; }
+            .cards { gap: 1rem; }
+            .card { padding: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo"><i class="fas fa-gem"></i> LuxeFav</div>
+            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+        </header>
+
+        <!-- Tampilan utama: 3 kotak -->
+        <main id="main-view">
+            <h1>koleksi Fav
+            dari : Deshbanaa</h1>
+            <div class="cards">
+                <div class="card" data-category="songs">
+                    <i class="fas fa-music"></i>
+                    <h3>Favorite Song</h3>
+                </div>
+                <div class="card" data-category="words">
+                    <i class="fas fa-feather"></i>
+                    <h3>Favorite Words</h3>
+                </div>
+                <div class="card" data-category="apps">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Favorite Apps</h3>
+                </div>
+            </div>
+        </main>
+
+        <!-- Tampilan kategori (akan muncul setelah klik kotak) -->
+        <div id="category-view" style="display: none;">
+            <button id="back-btn"><i class="fas fa-arrow-left"></i> Kembali</button>
+            <h2 id="category-title"></h2>
+            <div id="items-list" class="items-grid"></div>
+        </div>
+
+        <footer>Design by Deshbanaaa 🔥</footer>
+    </div>
+
+    <script>
+        (function() {
+            // ===== Inisialisasi localStorage dengan data contoh jika kosong =====
+            if (!localStorage.getItem('favorites')) {
+                const sample = {
+                    songs: [
+                        { name: 'Bohemian Rhapsody', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&h=100&fit=crop' },
+                        { name: 'Blinding Lights', image: 'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?w=100&h=100&fit=crop' }
+                    ],
+                    words: [
+                        { name: 'Hanya hari ini', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=100&h=100&fit=crop' },
+                        { name: 'This too shall pass', image: 'https://images.unsplash.com/photo-1474932430478-367dbb6832c1?w=100&h=100&fit=crop' }
+                    ],
+                    apps: [
+                        { name: 'Spotify', image: 'https://images.unsplash.com/photo-1611339555312-b6078e92df4a?w=100&h=100&fit=crop' },
+                        { name: 'Notion', image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=100&h=100&fit=crop' }
+                    ]
+                };
+                localStorage.setItem('favorites', JSON.stringify(sample));
+            }
+
+            // ===== Tema toggle =====
+            const themeToggle = document.getElementById('theme-toggle');
+            const iconTheme = themeToggle.querySelector('i');
+            const body = document.body;
+
+            // cek preferensi tema sebelumnya
+            if (localStorage.getItem('theme') === 'dark') {
+                body.classList.add('dark');
+                iconTheme.className = 'fas fa-sun';
+            } else {
+                iconTheme.className = 'fas fa-moon';
+            }
+
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+                if (body.classList.contains('dark')) {
+                    iconTheme.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    iconTheme.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'light');
+                }
+                // animasi kecil
+                themeToggle.style.transform = 'scale(1.2)';
+                setTimeout(() => themeToggle.style.transform = '', 200);
+            });
+
+            // ===== Navigasi tampilan =====
+            const mainView = document.getElementById('main-view');
+            const categoryView = document.getElementById('category-view');
+            const categoryTitle = document.getElementById('category-title');
+            const itemsList = document.getElementById('items-list');
+            const backBtn = document.getElementById('back-btn');
+
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const category = card.dataset.category; // 'songs', 'words', 'apps'
+                    let title = '';
+                    if (category === 'songs') title = '🎵 Lagu Favorit';
+                    else if (category === 'words') title = '✨ Kata & Kalimat Favorit';
+                    else title = '🚀 Aplikasi Favorit';
+
+                    categoryTitle.textContent = title;
+                    loadItems(category);
+                    mainView.style.display = 'none';
+                    categoryView.style.display = 'block';
+                });
+            });
+
+            backBtn.addEventListener('click', () => {
+                mainView.style.display = 'block';
+                categoryView.style.display = 'none';
+            });
+
+            function loadItems(category) {
+                const data = JSON.parse(localStorage.getItem('favorites')) || { songs: [], words: [], apps: [] };
+                const items = data[category] || [];
+                itemsList.innerHTML = '';
+
+                if (items.length === 0) {
+                    itemsList.innerHTML = '<p style="grid-column:1/-1; text-align:center; opacity:0.7;">✨ belum ada item, tambahkan dari halaman admin ✨</p>';
+                    return;
+                }
+
+                items.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'item-card';
+                    // jika image tersedia, tampilkan gambar; jika tidak, ikon default
+                    if (item.image && item.image.trim() !== '') {
+                        card.innerHTML = `<img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/80?text=🎵'">`;
+                    } else {
+                        card.innerHTML = `<i class="fas fa-star"></i>`;
+                    }
+                    card.innerHTML += `<p>${item.name}</p>`;
+                    itemsList.appendChild(card);
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
